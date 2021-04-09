@@ -2,7 +2,7 @@
 
 from ORSModel import Channel,orsObj
 # %%
-channel = orsObj('358E6EBB0D0F407ABEBEDA0FDF68CB72CxvChannel')
+channel = orsObj('891DD8F288DA43F5B4E0BDF3888C411CCxvChannel')
 # channel = Channel()
 # #set it sizes, since we use the default voxel size, the channel is for now 100 meter cube
 # channel.setXYZTSize(100,100,100,1)
@@ -23,6 +23,24 @@ channel = orsObj('358E6EBB0D0F407ABEBEDA0FDF68CB72CxvChannel')
 # #tell the channel that it data was modified (this can trigger event)
 # channel.setDataDirty()
 
+#%% crop
+
 #%%
 array = channel.getNDArray()
+
+array = array.swapaxes(0,2)
+array = array.squeeze()
+arrayXDim = array.shape[0]
+arrayYDim = array.shape[1]
+array = array.reshape(arrayXDim*arrayYDim)
+# coordinates from dragonfly to python are [(x-1 * yDim) + (y-1)]
+
+
+print(array[(268*arrayYDim + 156)])
+
 print(array.shape)
+
+#%%
+from matplotlib import pyplot as plt
+
+# NEXT STEP: VISUALIZE IF THERE ARE CLUSTERS WITH THE RED ARRAY
