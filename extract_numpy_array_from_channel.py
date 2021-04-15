@@ -1,8 +1,12 @@
 # %%
 
 from ORSModel import Channel,orsObj
+import numpy as np
 # %%
-channel = orsObj('891DD8F288DA43F5B4E0BDF3888C411CCxvChannel')
+blue_channel = orsObj('31E87487647E49EA857A556B726189ACCxvChannel')
+green_channel = orsObj('F1FF5DFF26904830BA995E4A89687C3FCxvChannel')
+red_channel = orsObj('8084CC0EF7EC4323A103967E5C1F2C81CxvChannel')
+
 # channel = Channel()
 # #set it sizes, since we use the default voxel size, the channel is for now 100 meter cube
 # channel.setXYZTSize(100,100,100,1)
@@ -24,23 +28,75 @@ channel = orsObj('891DD8F288DA43F5B4E0BDF3888C411CCxvChannel')
 # channel.setDataDirty()
 
 #%% crop
+#%%
+red_array = red_channel.getNDArray()
+red_array = red_array.swapaxes(0,2)
+red_array = red_array.squeeze()
+red_arrayXDim = red_array.shape[0]
+red_arrayYDim = red_array.shape[1]
+red_array = red_array.reshape(red_arrayXDim*red_arrayYDim)
+
+print(red_array.shape)
 
 #%%
-array = channel.getNDArray()
+blue_array = blue_channel.getNDArray()
+blue_array = blue_array.swapaxes(0,2)
+blue_array = blue_array.squeeze()
+blue_arrayXDim = blue_array.shape[0]
+blue_arrayYDim = blue_array.shape[1]
+blue_array = blue_array.reshape(blue_arrayXDim*blue_arrayYDim)
 
-array = array.swapaxes(0,2)
-array = array.squeeze()
-arrayXDim = array.shape[0]
-arrayYDim = array.shape[1]
-array = array.reshape(arrayXDim*arrayYDim)
+print(blue_array.shape)
+
+#%%
+green_array = green_channel.getNDArray()
+green_array = green_array.swapaxes(0,2)
+green_array = green_array.squeeze()
+green_arrayXDim = green_array.shape[0]
+green_arrayYDim = green_array.shape[1]
+green_array = green_array.reshape(green_arrayXDim*green_arrayYDim)
+
 # coordinates from dragonfly to python are [(x-1 * yDim) + (y-1)]
+print(green_array[((156-1)*green_arrayYDim + (168-1))])
 
-
-print(array[(268*arrayYDim + 156)])
-
-print(array.shape)
+print(green_array.shape)
 
 #%%
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-# NEXT STEP: VISUALIZE IF THERE ARE CLUSTERS WITH THE RED ARRAY
+fig = plt.figure()
+ax = Axes3D(fig)
+
+ax.scatter(red_array, green_array, blue_array, c = 'b', marker='.')
+plt.show()
+
+#%%
+# Concatenate the arrays
+rgb_array = np.zeros((red_array.shape[0],3))
+rgb_array[:,0] = red_array
+rgb_array[:,1] = green_array
+rgb_array[:,2] = blue_array
+print(rgb_array.shape)
+
+#%%
+# from sklearn.cluster import KMeans
+
+# md=[]
+# for i in range(1,21):
+#   kmeans=KMeans(n_clusters=i)
+#   kmeans.fit(rgb_array)
+#   o=kmeans.inertia_
+#   md.append(o)
+# print(md)
+
+#%%
+from sklearn.cluster import KMeans
+
+kmeans=KMeans(n_clusters=5)
+s=kmeans.fit(rgb_array)
+
+#%%
+labels=kmeans.labels_
+print(labels)
+labels=list(labels)
