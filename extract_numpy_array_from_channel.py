@@ -62,14 +62,15 @@ print(green_array[((156-1)*green_arrayYDim + (168-1))])
 print(green_array.shape)
 
 #%%
-from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# Plot the 3D scatter plot
+# from matplotlib import pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 
-fig = plt.figure()
-ax = Axes3D(fig)
+# fig = plt.figure()
+# ax = Axes3D(fig)
 
-ax.scatter(red_array, green_array, blue_array, c = 'b', marker='.')
-plt.show()
+# ax.scatter(red_array, green_array, blue_array, c = 'b', marker='.')
+# plt.show()
 
 #%%
 # Concatenate the arrays
@@ -93,10 +94,28 @@ print(rgb_array.shape)
 #%%
 from sklearn.cluster import KMeans
 
-kmeans=KMeans(n_clusters=5)
+kmeans=KMeans(n_clusters=8)
 s=kmeans.fit(rgb_array)
 
 #%%
+# Extract labels into array
 labels=kmeans.labels_
 print(labels)
-labels=list(labels)
+print(labels.shape)
+
+labels = labels.reshape((red_arrayXDim,red_arrayYDim), order='C')
+labels = np.flip(labels, axis=1)
+print(labels.shape)
+# labels=list(labels)
+
+#%%
+# Determine centroids of clusters
+centroid=kmeans.cluster_centers_
+# print(centroid)
+
+#%%
+# Convert Numpy array to Channel
+from ORSModel import createChannelFromNumpyArray
+labels_channel = createChannelFromNumpyArray(labels)
+labels_channel.setTitle('Labels')
+labels_channel.publish()
