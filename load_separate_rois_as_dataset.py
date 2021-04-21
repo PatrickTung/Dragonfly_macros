@@ -38,6 +38,8 @@ for i in slice_numbers:
     # print(array.shape)
     # print(imarray.shape)
 
+#TODO make a mask ROI automatically
+
 
 # %%
 #publish it so that it is visible in the Object properties list
