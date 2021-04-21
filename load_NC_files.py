@@ -1,19 +1,18 @@
 # %%
 from netCDF4 import Dataset
-# import netCDF4 as nc
 
 rootgrp = Dataset(r"C:\Users\Patrick\Music\tomo_R_LoRes.nc", "r")
-print(rootgrp.data_model)
-print(rootgrp.variables)
-print(rootgrp.variables['tomo'].shape[0])
-print(rootgrp.dimensions['tomo_xdim'].size)
-# rootgrp.close()
 
-# ds = nc.Dataset(r"C:\Users\Patrick\Music\tomo_R_LoRes.nc", "r")
-# ds.t
+ds = rootgrp['tomo'][:]
+print("Voxel size is ",rootgrp.voxel_size_xyz[0]*1000, " microns")
+# print(rootgrp.total_grid_size_xyz)
+
+rootgrp.close()
 
 # %%
-# import xarray as xr
+from ORSModel import createChannelFromNumpyArray
+labels_channel = createChannelFromNumpyArray(ds)
+labels_channel.setTitle('Labels')
+# Set voxel size
 
-# %%
-# ds_disk = xr.open_dataset(r"C:\Users\Patrick\Desktop\tomo_R_LoRes.nc")
+labels_channel.publish()
