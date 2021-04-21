@@ -94,7 +94,7 @@ print(rgb_array.shape)
 #%%
 from sklearn.cluster import KMeans
 
-kmeans=KMeans(n_clusters=8)
+kmeans=KMeans(n_clusters=7)
 s=kmeans.fit(rgb_array)
 
 #%%
@@ -110,7 +110,7 @@ print(labels.shape)
 
 #%%
 # Determine centroids of clusters
-centroid=kmeans.cluster_centers_
+# centroid=kmeans.cluster_centers_
 # print(centroid)
 
 #%%
@@ -119,3 +119,6 @@ from ORSModel import createChannelFromNumpyArray
 labels_channel = createChannelFromNumpyArray(labels)
 labels_channel.setTitle('Labels')
 labels_channel.publish()
+
+#%%
+# NEXT STEP: ABANDON USING ALL OF THE IMAGES FOR NOW BECAUSE THE CLUSTERING ISN'T VERY CLEAN
