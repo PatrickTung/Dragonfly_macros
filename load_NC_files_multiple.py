@@ -25,7 +25,7 @@ for i in range( start_file_num, end_file_num+1 ):
 
 from ORSModel import createChannelFromNumpyArray
 
-labels_channel = createChannelFromNumpyArray(ds)
+labels_channel = createChannelFromNumpyArray(ds.data)
 labels_channel.setTitle(rootgrp.data_description)
 labels_channel.setXSpacing(rootgrp.voxel_size_xyz[0]/1000)
 labels_channel.setYSpacing(rootgrp.voxel_size_xyz[1]/1000)

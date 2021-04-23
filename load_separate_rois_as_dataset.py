@@ -25,18 +25,25 @@ array = channel.getNDArray()
 
 # %%
 #! User Input
-slice_numbers =[27,83,103,139,159,181,223,253,281,303,314,363,409,446]
+slice_numbers =[27,83,103,139,159,181,223,253,281,303,363,409,446]
+counter = 1
 for i in slice_numbers:
     #! User Input
-    file_prefix = r"C:\Users\Patrick\OneDrive - UNSW\CTDev_FuelCell_DL_demo\QM_segment_images\block00000000.view"
-    file_suffix = r".labels.tif"
-    file_dir = file_prefix + str(i).rjust(3,'0') + file_suffix
-    # print(file_dir)
-    im = Image.open(file_dir)
-    imarray = np.array(im)
-    array[i-1,:,:] = imarray[:]
+    # file_prefix = r"C:\Users\Patrick\OneDrive - UNSW\CTDev_FuelCell_DL_demo\QM_segment_images\block00000000.view"
+    # file_suffix = r".labels.tif"
+    # file_dir = file_prefix + str(i).rjust(3,'0') + file_suffix
+    file_prefix = "C:\\Users\\Patrick\\OneDrive - UNSW\\CTDev_FuelCell_DL_demo\\fuel_cell_2D\\fuel_cell_2D\\label_convert\\"
+
+    file_suffix = r".tif"
+    file_dir = file_prefix + str(counter) + file_suffix
+    print(file_dir)
+    if counter != 6:
+        im = Image.open(file_dir)
+        imarray = np.array(im)
+        array[i-1,:,:] = imarray[:]
     # print(array.shape)
     # print(imarray.shape)
+    counter += 1
 
 #TODO make a mask ROI automatically
 
