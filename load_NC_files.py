@@ -1,7 +1,10 @@
 # %%
-from netCDF4 import Dataset
+# USER INPUT
+file_dir = r"C:\Users\Patrick\OneDrive - UNSW\Desktop\1_CTDev\CTDev_Lakshmi_Civil\CIVIL_Steve_sample2by1_43mm_bot_SF_BeamC\tomo_RMG_LoRes.nc"
 
-rootgrp = Dataset(r"C:\Users\Patrick\OneDrive - UNSW\Desktop\1_CTDev\CTDev_Lakshmi_Civil\CIVIL_Steve_sample2by1_43mm_bot_SF_BeamC\tomo_RMG_LoRes.nc", "r")
+# %%
+from netCDF4 import Dataset
+rootgrp = Dataset(file_dir, "r")
 
 ds = rootgrp['tomo'][:]
 # print("Voxel size is ",rootgrp.voxel_size_xyz[0]*1000, " microns")
