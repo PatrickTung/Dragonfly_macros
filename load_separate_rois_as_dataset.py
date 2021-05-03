@@ -24,6 +24,14 @@ channel.initializeDataForUINT()
 array = channel.getNDArray()
 
 # %%
+# from ORSModel import ROI, orsColor
+# mask_roi = ROI()
+# mask_roi.setInitialColor(orsColor(209,80,230,127))
+# mask_roi.copyShapeFromStructuredGrid(channel)
+
+# channel.getAsROIWithinRangeInArea(1, 1, 0, 0, 0, channel.getXSize()*0.5, channel.getYSize()*0.5, channel.getZSize()*0.5, None, roi)
+
+# %%
 #! User Input
 slice_numbers =[27,83,103,139,159,181,223,253,281,303,363,409,446]
 counter = 1
@@ -36,8 +44,8 @@ for i in slice_numbers:
 
     file_suffix = r".tif"
     file_dir = file_prefix + str(counter) + file_suffix
-    print(file_dir)
     if counter != 6:
+        print(file_dir)
         im = Image.open(file_dir)
         imarray = np.array(im)
         array[i-1,:,:] = imarray[:]
@@ -51,6 +59,7 @@ for i in slice_numbers:
 # %%
 #publish it so that it is visible in the Object properties list
 # channel.publish()
+# mask_roi.publish()
 
 # %%
 
@@ -64,3 +73,6 @@ from ORSModel import createChannelFromNumpyArray
 labels_channel = createChannelFromNumpyArray(array)
 labels_channel.setTitle('Labels')
 labels_channel.publish()
+
+
+mask_roi.publish()

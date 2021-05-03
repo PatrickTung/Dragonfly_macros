@@ -3,9 +3,9 @@ from ORSModel import Channel,orsObj
 import numpy as np
 
 # %%
-blue_channel = orsObj('31E87487647E49EA857A556B726189ACCxvChannel')
-green_channel = orsObj('F1FF5DFF26904830BA995E4A89687C3FCxvChannel')
-red_channel = orsObj('8084CC0EF7EC4323A103967E5C1F2C81CxvChannel')
+blue_channel = orsObj('5984C781B90A40ACBA13EC99BEA1FF96CxvChannel')
+green_channel = orsObj('4C1CAB72C340409FB3B1A91D6EEC167CCxvChannel')
+red_channel = orsObj('4B16604214CD478CB39E6CD5431BF16FCxvChannel')
 
 # channel = Channel()
 # #set it sizes, since we use the default voxel size, the channel is for now 100 meter cube
@@ -94,7 +94,7 @@ print(rgb_array.shape)
 #%%
 from sklearn.cluster import KMeans
 
-kmeans=KMeans(n_clusters=7)
+kmeans=KMeans(n_clusters=10)
 s=kmeans.fit(rgb_array)
 
 #%%

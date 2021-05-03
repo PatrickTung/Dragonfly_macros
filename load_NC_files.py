@@ -1,12 +1,15 @@
 # %%
 #! USER INPUT
-file_dir = r"C:\Users\Patrick\OneDrive - UNSW\Desktop\1_CTDev\CHEM_BAT_After150h_1n2_20mm_SF\tomo_RMG_LoRes.nc"
+# file_dir = r"C:\Users\Patrick\OneDrive - UNSW\Desktop\1_CTDev\CHEM_BAT_After150h_1n2_20mm_SF\tomo_RMG_LoRes.nc"
 
 # file_dir  = r"C:\Users\Patrick\OneDrive - UNSW\Desktop\1_CTDev\CTDev_Lakshmi_Civil\CIVIL_Steve_sample2by1_43mm_bot_SF_BeamC\tomo_RMG_LoRes.nc"
 
+file_dir = r"C:\Users\Patrick\Downloads\tomo_RMG_LoRes.nc"
+
+# file_dir = r"C:\Users\Patrick\Music\tomo_R_LoRes.nc"
+
 # %%
 from netCDF4 import Dataset
-from ORSModel import createChannelFromNumpyArray
 rootgrp = Dataset(file_dir, "r")
 
 ds = rootgrp['tomo'][:].data
@@ -16,6 +19,8 @@ ds = rootgrp['tomo'][:].data
 # ds = ds.astype('int16')
 
 # %%
+from ORSModel import createChannelFromNumpyArray
+
 labels_channel = createChannelFromNumpyArray(ds)
 labels_channel.setTitle(rootgrp.dataset_id)
 labels_channel.setXSpacing(rootgrp.voxel_size_xyz[0]/1000)
@@ -25,4 +30,5 @@ labels_channel.setZSpacing(rootgrp.voxel_size_xyz[2]/1000)
 
 labels_channel.publish()
 
+# %%
 rootgrp.close()
