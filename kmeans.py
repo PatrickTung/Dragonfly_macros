@@ -3,9 +3,15 @@ from ORSModel import Channel,orsObj
 import numpy as np
 
 # %%
-blue_channel = orsObj('5984C781B90A40ACBA13EC99BEA1FF96CxvChannel')
-green_channel = orsObj('4C1CAB72C340409FB3B1A91D6EEC167CCxvChannel')
-red_channel = orsObj('4B16604214CD478CB39E6CD5431BF16FCxvChannel')
+red_channel = orsObj('9DB0BBDD9C0E4661B71C15ABC91C9050CxvChannel')
+green_channel = orsObj('C691EEA1AC0A4470994971A2408A8665CxvChannel')
+blue_channel = orsObj('72E031C786C849B9AF953AB9EAFF0376CxvChannel')
+
+bins = np.linspace(0,255,4)
+
+clusters = 8
+
+# spacing =
 
 # channel = Channel()
 # #set it sizes, since we use the default voxel size, the channel is for now 100 meter cube
@@ -32,9 +38,8 @@ red_channel = orsObj('4B16604214CD478CB39E6CD5431BF16FCxvChannel')
 red_array = red_channel.getNDArray()
 red_array = red_array.swapaxes(0,2)
 red_array = red_array.squeeze()
-red_arrayXDim = red_array.shape[0]
-red_arrayYDim = red_array.shape[1]
-red_array = red_array.reshape(red_arrayXDim*red_arrayYDim)
+red_array = red_array.reshape(red_array.shape[0]*red_array.shape[1])
+red_inds = np.digitize(red_array,bins)
 
 print(red_array.shape)
 
@@ -45,6 +50,7 @@ blue_array = blue_array.squeeze()
 blue_arrayXDim = blue_array.shape[0]
 blue_arrayYDim = blue_array.shape[1]
 blue_array = blue_array.reshape(blue_arrayXDim*blue_arrayYDim)
+blue_inds = np.digitize(blue_array,bins)
 
 print(blue_array.shape)
 
@@ -55,11 +61,13 @@ green_array = green_array.squeeze()
 green_arrayXDim = green_array.shape[0]
 green_arrayYDim = green_array.shape[1]
 green_array = green_array.reshape(green_arrayXDim*green_arrayYDim)
+green_inds = np.digitize(green_array,bins)
 
 # coordinates from dragonfly to python are [(x-1 * yDim) + (y-1)]
 print(green_array[((156-1)*green_arrayYDim + (168-1))])
 
 print(green_array.shape)
+
 
 #%%
 # Plot the 3D scatter plot
@@ -69,15 +77,22 @@ print(green_array.shape)
 # fig = plt.figure()
 # ax = Axes3D(fig)
 
-# ax.scatter(red_array, green_array, blue_array, c = 'b', marker='.')
+# # ax.scatter(red_array, green_array, blue_array, c = 'b', marker='.')
+# ax.scatter(red_inds, green_inds, blue_inds, c = 'b', marker='.')
 # plt.show()
 
 #%%
 # Concatenate the arrays
+# rgb_array = np.zeros((red_array.shape[0],3))
+# rgb_array[:,0] = red_array
+# rgb_array[:,1] = green_array
+# rgb_array[:,2] = blue_array
+# print(rgb_array.shape)
+
 rgb_array = np.zeros((red_array.shape[0],3))
-rgb_array[:,0] = red_array
-rgb_array[:,1] = green_array
-rgb_array[:,2] = blue_array
+rgb_array[:,0] = red_inds
+rgb_array[:,1] = green_inds
+rgb_array[:,2] = blue_inds
 print(rgb_array.shape)
 
 #%%
@@ -94,7 +109,7 @@ print(rgb_array.shape)
 #%%
 from sklearn.cluster import KMeans
 
-kmeans=KMeans(n_clusters=10)
+kmeans=KMeans(n_clusters=clusters)
 s=kmeans.fit(rgb_array)
 
 #%%
@@ -103,7 +118,7 @@ labels=kmeans.labels_
 print(labels)
 print(labels.shape)
 
-labels = labels.reshape((red_arrayXDim,red_arrayYDim), order='C')
+labels = labels.reshape((red_array.shape[0],red_array.shape[1]), order='C')
 labels = np.flip(labels, axis=1)
 print(labels.shape)
 # labels=list(labels)
@@ -120,5 +135,3 @@ labels_channel = createChannelFromNumpyArray(labels)
 labels_channel.setTitle('Labels')
 labels_channel.publish()
 
-#%%
-# NEXT STEP: ABANDON USING ALL OF THE IMAGES FOR NOW BECAUSE THE CLUSTERING ISN'T VERY CLEAN
