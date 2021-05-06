@@ -46,6 +46,7 @@ from ORSModel import createChannelFromNumpyArray
 newChannel = createChannelFromNumpyArray(multi_roi_array)
 newMROI = MultiROI()
 newChannel.getAsMultiROI(inOutStructuredGrid=newMROI,IProgress=multi_roi_progress)
+newMROI.setOrigin(multi_roi.getOrigin())
 newMROI.setXSpacing(multi_roi.getXSpacing())
 newMROI.setYSpacing(multi_roi.getYSpacing())
 newMROI.setZSpacing(multi_roi.getZSpacing())
